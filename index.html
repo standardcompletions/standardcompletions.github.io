@@ -80,7 +80,7 @@ curl -X POST "https://inference-api.nousresearch.com/v1/chat/completions" \
 </pre></p>
 <p>Even worse, because there is no standard way for a provider to signal if they support features like logprobs or assistant prefixes, the only way for an API consumer to detect if the feature is supported is to try it and see what happens, or <a href="https://github.com/vgel/logitloom/blob/3a6be56fbf53e28b43ab0fbd14b357d5d444bfa3/api-sniffer.ts">attempt to detect the upstream provider even if they are being proxied</a>.</p>
 <p>We hope by standardizing a superset of the OpenAI completions APIs, we can make this experience easier for developers, produce a standard SDK that providers can recommend to their users instead of the OpenAI SDK—while maintaining backwards compatibility with the OpenAI SDK—and make the LLM ecosystem more interoperable.</p>
-<p>Join us! If you are a provider or developer interested in joining the Standard Completions working group, please get in touch via email or Twitter/X:</p> <p><ul>
+<p>Join us! If you are a provider or developer interested in joining the Standard Completions working group, please get in touch via email, Twitter/X, or open an issue on the rfcs repository:</p> <p><ul>
 <li>Email: standardcompletions (at) vgel (dot) me</li>
 <li><a href="https://x.com/stdcompletions">Twitter/X: @stdcompletions</a></li>
 <li><a href="https://github.com/standardcompletions/rfcs/issues">standardcompletions/rfcs Github repository</a></li>
