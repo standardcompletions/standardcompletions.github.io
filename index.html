@@ -1,0 +1,87 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Standard Completions</title>
+  <meta name="description" content="A project to standardize a superset of the OpenAI-compatible completion APIs.">
+  <link rel="canonical" href="https://standardcompletions.org">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="https://standardcompletions.org">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Standard Completions">
+  <meta property="og:description" content="A project to standardize a superset of the OpenAI-compatible completion APIs.">
+ 
+  <!-- Twitter Meta Tags -->
+  <meta property="twitter:domain" content="standardcompletions.org">
+  <meta property="twitter:url" content="https://standardcompletions.org">
+  <meta name="twitter:title" content="Standard Completions">
+  <meta name="twitter:description" content="A project to standardize a superset of the OpenAI-compatible completion APIs.">
+
+  <style>
+    body {
+      line-height: 1.4;
+      font-size: 16px;
+      padding: 0 10px;
+      margin: 50px auto;
+      max-width: 700px;
+    }
+
+    main { max-width:60em; margin:15 auto; margin-top: 70px; }
+
+    pre { font-size: 75% }
+</style>
+</head>
+
+<body>
+<main>
+<h1>Standard Completions</h1>
+<p>Many LLM providers and open-source projects now offer OpenAI-compatible Completions and Chat Completions APIs, including Deepseek, xAI, OpenRouter, Nous Research, vLLM, and more.</p>
+<p>However, OpenAI considers Completions <a href="https://platform.openai.com/docs/api-reference/completions">a legacy API</a>, and while Chat Completions is not currently being deprecated, it is <a href="https://platform.openai.com/docs/guides/responses-vs-chat-completions">de-emphasized in favor of the OpenAI Responses API</a>.</p>
+<p>While OpenAI has committed to supporting the current Chat Completions API indefinitely, it does not support features like multimodal outputs, stored input objects, explicit caching, assistant prefixes (prefill), and other features. Providers offering OpenAI-compatible APIs have added these features in non-standard ways, complicating usage for developers.</p>
+<p>For example, a request with an assistant prefix works three different ways across three different OpenAI-compatible providers:</p>
+<p><pre>
+# openrouter: trailing assistant message
+curl -X POST "https://openrouter.ai/api/v1/chat/completions" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -d '{
+    "model": "anthropic/claude-3.5-sonnet",
+    "messages": [
+      { "role": "user", "content": "Tell me a joke." },
+      { "role": "assistant", "content": "Sure! How about a knock-knock joke:" }
+    ]
+  }'
+
+# deepseek: "prefix": true
+curl -X POST "https://api.deepseek.com/beta/chat/completions" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
+  -d '{
+    "model": "deepseek-chat",
+    "messages": [
+      { "role": "user", "content": "Tell me a joke." },
+      { "role": "assistant", "content": "Sure! How about a knock-knock joke:", "prefix": true }
+    ]
+  }'
+
+# vLLM: "continue_final_message": true
+curl -X POST "https://inference-api.nousresearch.com/v1/chat/completions" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $NOUS_API_KEY" \
+  -d '{
+    "model": "DeepHermes-3-Mistral-24B-Preview",
+    "messages": [
+      { "role": "user", "content": "Tell me a joke." },
+      { "role": "assistant", "content": "Sure! How about a knock-knock joke:" }
+    ],
+    "add_generation_prompt": false,
+    "continue_final_message": true 
+  }'
+</pre></p>
+<p>Even worse, because there is no standard way for a provider to signal if they support features like logprobs or assistant prefixes, the only way for an API consumer to detect if the feature is supported is to try it and see what happens, or <a href="https://github.com/vgel/logitloom/blob/3a6be56fbf53e28b43ab0fbd14b357d5d444bfa3/api-sniffer.ts">attempt to detect the upstream provider even if they are being proxied</a>.</p>
+<p>We hope by standardizing a superset of the OpenAI completions APIs, we can make this experience easier for developers, produce a standard SDK that providers can recommend to their users instead of the OpenAI SDK—while maintaining backwards compatibility with the OpenAI SDK—and make the LLM ecosystem more interoperable.</p>
+<p>Join us! If you are a provider or developer interested in joining the Standard Completions working group, please get in touch via email or Twitter/X:</p> <p><ul>
+<li>Email: standardcompletions (at) vgel (dot) me</li>
+<li><a href="https://x.com/voooooogel">Twitter/X: @voooooogel</a></li>
+</ul></p>
+</main>
+</body>
+</html>
